@@ -4,7 +4,10 @@
 #include <fstream>
 #include <utility>
 #include <algorithm>
-#include "cube.h"
+#include "cubekdf.h"
+
+int iterations = 2;
+int keylen = 16;
 
 using namespace std;
 
@@ -21,12 +24,23 @@ int main(int argc, char** argv) {
     in = argv[2];
     out = argv[3];
     key = argv[4];
+    int chk;
     infile.open(in.c_str(), std::ios::binary);
     while (!infile.eof()) {
-	    data.append(1, infile.get());
+	    b = infile.get();
+            chk = infile.peek();
+	    if (chk == EOF) {
+                if (infile.eof()) {
+		    break;
+		}
+            }
+	    else {
+	        data.append(1, b);
+	    }
     }
     infile.close();
     string c;
+    key = genkey(key, keylen, iterations);
     if (mode == "encrypt") {
     	c = cube_encrypt(data, key);
     }
