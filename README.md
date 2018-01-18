@@ -1,5 +1,23 @@
 # Cube256 C++ implementation  
 
-cube_encrypt(data, key, nonce);  
+# Usage:  
+Cube cube;
 
-cube_decrypt(data, key, nonce);  
+cube.encrypt(data, key, nonce);  
+
+cube.decrypt(data, key, nonce);  
+
+# CubeHash  
+CubeHash hash;  
+
+hash.digest(data, optionalkey, length_in_bits);  
+
+# CubeKDF  
+CubeKDF kdf;  
+
+kdf.genkey(key, keylen_in_bytes, iterations);  
+
+# CubeRandom  
+CubeRandom rand;  
+
+rand.random(num_of_bytes);  
