@@ -4,7 +4,7 @@
 #include <fstream>
 #include <utility>
 #include <algorithm>
-#include "cubeclass.h"
+#include "cube.h"
 
 int iterations = 10;
 int keylen = 128;
