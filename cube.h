@@ -113,14 +113,16 @@ class Cube {
         }
     }
 
-    string cube_encrypt (string data, string key) {
+    string encrypt (string data, string key, string nonce = string()) {
+        gen_cube(size_factor, size_factor, alphabet_size);
+        key_cube(key);
+        key_cube(nonce);
         int ctr = 0;
         int sub;
         int sub_pos;
         int shift;
         int z;
         int y;
-        string cipher_text;
         string sub_key;
         sub_key = key;
         for (unsigned char byte: data) {
@@ -136,20 +138,22 @@ class Cube {
 	    }
 	    sub_key = key_scheduler(sub_key);
 	    morph_cube(ctr, sub_key);
-	    cipher_text.push_back(char(sub));
+	    data[ctr] = char(sub);
             ctr++;
         }
-        return cipher_text;
+        return data;
     }
 
-    string cube_decrypt (string data, string key) {
+   string decrypt (string data, string key, string nonce = string()) {
+        gen_cube(size_factor, size_factor, alphabet_size);
+        key_cube(key);
+        key_cube(nonce);
         int ctr = 0;
         int sub;
         int sub_pos;
         int shift;
         int z;
         int y;
-        string cipher_text;
         string sub_key;
         sub_key = key;
         for (unsigned char byte: data) {
@@ -164,27 +168,10 @@ class Cube {
 	    }
 	    sub_key = key_scheduler(sub_key);
 	    morph_cube(ctr, sub_key);
-	    cipher_text.push_back(char(sub));
+	    data[ctr] = char(sub);
             ctr++;
         }
-        return cipher_text;
-    }
-    string encrypt (string data, string key, string nonce = string()) {
-        string c;
-        gen_cube(size_factor, size_factor, alphabet_size);
-        key_cube(key);
-        key_cube(nonce);
-        c = cube_encrypt(data, key);
-        return c;
-    }
-
-   string decrypt (string data, string key, string nonce = string()) {
-        string c;
-        gen_cube(size_factor, size_factor, alphabet_size);
-        key_cube(key);
-        key_cube(nonce);
-        c = cube_decrypt(data, key);
-        return c;
+        return data;
     }
 };
 
@@ -194,12 +181,24 @@ class CubeHash {
         string d;
         int x;
         string iv;
-        for (x = 0; x < (length / 8); x++) {
-            iv.push_back(char(0));
+        if (key.empty() == true) {
+            for (x = 0; x < (length / 8); x++) {
+                key.push_back(char(0));
+            }   
         }
         Cube cube;
         d = cube.encrypt(key, data, key);
         return d;
+    }
+};
+
+class CubeMAC {
+    public:
+    string mac (string data, string key, int length) {
+        string m;
+	CubeHash hash;
+	m = hash.digest(data, key, length);
+	return m;
     }
 };
 

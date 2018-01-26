@@ -9,12 +9,11 @@
 int iterations = 10;
 int keylen = 128;
 int nonce_length = 16;
-int mac_length = 16;
 
 using namespace std;
 
 void usage() {
-	    cout << "Usage: cube256 <encrypt/decrypt> <input file> <output file> <password>" << "\n";
+    cout << "Usage: cube256 <encrypt/decrypt> <input file> <output file> <password>" << "\n";
 }
 
 int main(int argc, char** argv) {
@@ -22,16 +21,16 @@ int main(int argc, char** argv) {
     ofstream outfile;
     string mode, in, out, key, msg, nonce, data;
     unsigned char b;
+    int i;
     if (argc < 5) {
         usage();
-	exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
     mode = argv[1];
     in = argv[2];
     out = argv[3];
     key = argv[4];
     string random_dev = "/dev/urandom";
-    int i;
     infile.open(in.c_str(), std::ios::binary);
     infile.seekg(0, ios::end);
     int fsize = infile.tellg();
@@ -42,42 +41,25 @@ int main(int argc, char** argv) {
 	data.push_back(b);
     }
     infile.close();
-    string c;
-    string mac;
     CubeKDF kdf;
     key = kdf.genkey(key, keylen, iterations);
     Cube cube;
-    int s;
     if (mode == "encrypt") {
 	CubeRandom rand;
 	nonce = rand.random(nonce_length);
-    	c = cube.encrypt(data, key, nonce);
-	CubeMAC cubemac;
-	mac = cubemac.mac(nonce+c, key, (mac_length * 8));
+    	data = cube.encrypt(data, key, nonce);
         outfile.open(out.c_str());
-        outfile << mac;
         outfile << nonce;
-        outfile << c;
+        outfile << data;
 	outfile.close();
     }
     else if (mode == "decrypt") {
-	string m;
-	m = data.substr(0, mac_length);
-	nonce = data.substr(mac_length, nonce_length);
-	msg = data.substr(mac_length+nonce_length, (data.length() - (nonce_length + mac_length)));
-        data.clear();
-	CubeMAC cubemac;
-	mac = cubemac.mac(nonce+msg, key, (mac_length * 8));
-	if (mac.compare(m) == 0) {
-	    c = cube.decrypt(msg, key, nonce);
-            outfile.open(out.c_str());
-            outfile << c;
-            outfile.close();
-	}
-	else {
-            cout << "MAC failed: message has been tampered with." << "\n";
-	    exit(1);
-	}
-    return 0;
+	nonce = data.substr(0, nonce_length);
+	msg = data.substr(nonce_length, (data.length() - nonce_length));
+	msg = cube.decrypt(msg, key, nonce);
+        outfile.open(out.c_str());
+        outfile << msg;
+        outfile.close();
     }
+    return 0;
 }
