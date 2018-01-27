@@ -1,5 +1,5 @@
 # Cube256 C++ implementation  
-Cube is an advanced substitution stream cipher.  It is classified as an Expensive Cipher.  If you have the resources to encrypt large files with Cube.  You'll be sure your secret will be safe for ages to come.
+Cube is an advanced substitution stream cipher.  It is classified as an Expensive Cipher.  If you have the resources to encrypt large files with Cube, you'll be sure your secret will be safe for ages to come.
 
 No attack of any kind has been proposed against Cube.  Cube passes NIST and DieHarder statistical tests.
 
