@@ -5,11 +5,12 @@
 #include <utility>
 #include <algorithm>
 #include "cube.h"
+#include <openssl/hmac.h>
 
 int iterations = 10;
 int keylen = 128;
 int nonce_length = 16;
-int mac_length = 16;
+int mac_length = 32;
 
 using namespace std;
 
@@ -43,7 +44,7 @@ int main(int argc, char** argv) {
     }
     infile.close();
     string c;
-    string mac;
+    unsigned char *mac;
     CubeKDF kdf;
     key = kdf.genkey(key, keylen, iterations);
     Cube cube;
@@ -51,13 +52,13 @@ int main(int argc, char** argv) {
     if (mode == "encrypt") {
 	CubeRandom rand;
 	nonce = rand.random(nonce_length);
-    	c = cube.encrypt(data, key, nonce);
-	CubeMAC cubemac;
-	mac = cubemac.mac(nonce+c, key, (mac_length * 8));
+    	data = cube.encrypt(data, key, nonce);
+        string ctxt = nonce + data;
+	mac = HMAC(EVP_sha256(), key.c_str(), key.length(), reinterpret_cast<const unsigned char *>(ctxt.c_str()), ctxt.length(), NULL, NULL);
         outfile.open(out.c_str());
         outfile << mac;
         outfile << nonce;
-        outfile << c;
+        outfile << data;
 	outfile.close();
     }
     else if (mode == "decrypt") {
@@ -66,9 +67,10 @@ int main(int argc, char** argv) {
 	nonce = data.substr(mac_length, nonce_length);
 	msg = data.substr(mac_length+nonce_length, (data.length() - (nonce_length + mac_length)));
         data.clear();
-	CubeMAC cubemac;
-	mac = cubemac.mac(nonce+msg, key, (mac_length * 8));
-	if (mac.compare(m) == 0) {
+        string ctxt = nonce + msg;
+	mac = HMAC(EVP_sha256(), key.c_str(), key.length(), reinterpret_cast<const unsigned char *>(ctxt.c_str()), ctxt.length(), NULL, NULL);
+	string m2(reinterpret_cast<char*>(mac));
+	if (m2.compare(m) == 0) {
 	    c = cube.decrypt(msg, key, nonce);
             outfile.open(out.c_str());
             outfile << c;
