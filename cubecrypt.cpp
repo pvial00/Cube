@@ -15,7 +15,7 @@ int mac_length = 32;
 using namespace std;
 
 void usage() {
-	    cout << "Usage: cube256 <encrypt/decrypt> <input file> <output file> <password>" << "\n";
+	    cout << "Usage: cubecrypt <encrypt/decrypt> <input file> <output file> <password>" << "\n";
 }
 
 int main(int argc, char** argv) {
