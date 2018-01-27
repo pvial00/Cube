@@ -4,7 +4,7 @@
 #include <fstream>
 #include <utility>
 #include <algorithm>
-#include "cube.h"
+#include "cube.cpp"
 #include <openssl/hmac.h>
 
 int iterations = 10;
