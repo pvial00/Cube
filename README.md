@@ -12,8 +12,8 @@ cube.encrypt(data, key, nonce);
 
 cube.decrypt(data, key, nonce);  
 
-# CubeHash  
-CubeHash hash;  
+# CubeH (Slow hash function)  
+CubeH hash;  
 
 hash.digest(data, optionalkey, length_in_bits);  
 
