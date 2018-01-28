@@ -15,7 +15,9 @@ int mac_length = 32;
 using namespace std;
 
 void usage() {
-	    cout << "Usage: cubecrypt <encrypt/decrypt> <input file> <output file> <password>" << "\n";
+    cout << "CubeCrypt v0.6 - File encryption utilizing the Cube256 cipher, nonce generation with CubeRandom and HMAC with OpenSSL SHA256 HMAC\n";
+    cout << "Author: pvial@kryptomagik.com\n";
+    cout << "Usage: cubecrypt <encrypt/decrypt> <input file> <output file> <password>" << "\n";
 }
 
 int main(int argc, char** argv) {
