@@ -222,7 +222,8 @@ class CubeKDF {
 class CubeRandom {
     public:
     string random (int length) {
-        char *seed;
+	int seedlength = 16;
+        char seed[seedlength];
         string iv;
         string bytes;
         int x;
@@ -230,7 +231,7 @@ class CubeRandom {
             iv.push_back(char(0));
         }
         ifstream urandom("/dev/urandom", ios::in|ios::binary);
-        urandom.read(seed, length);
+        urandom.read(seed, seedlength);
         urandom.close();
 	Cube cube;
         bytes = cube.encrypt(iv, seed);
