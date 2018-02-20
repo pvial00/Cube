@@ -1,7 +1,7 @@
 # Cube256 C++ implementation  
 Cube is an advanced substitution stream cipher.  It is classified as an Expensive Cipher.  If you have the resources to encrypt large files with Cube, you'll be sure your secret will be safe for ages to come.
 
-No attack of any kind has been proposed against Cube.  Cube passes NIST and DieHarder statistical tests.
+Cube passes NIST and DieHarder statistical tests.  Because of the way Cube utilizes the key values, the minimum key length is 16 bytes or 128 bits.  Key lengths of a single byte have been identified as weak.
 
 (Warning: Side channel attacks are possible against Cube.)
 
