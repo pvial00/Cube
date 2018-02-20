@@ -175,7 +175,7 @@ class Cube {
     }
 };
 
-class CubeH {
+class CubeSum {
     public:
     string digest (string data, string key = string(), int length = 256) {
         string d;
@@ -196,7 +196,7 @@ class CubeMAC {
     public:
     string mac (string data, string key, int length) {
         string m;
-	CubeH hash;
+	CubeSum hash;
 	m = hash.digest(data, key, length);
 	return m;
     }
@@ -209,7 +209,7 @@ class CubeKDF {
         int x;
         string iv;
         string h;
-        CubeH hash;
+        CubeSum hash;
         h = key;
 	key = hash.digest(key, string(), length);
         for (x = 0; x < iterations; x++) {

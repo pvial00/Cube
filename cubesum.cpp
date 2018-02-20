@@ -11,7 +11,7 @@ int hashlen = 128;
 using namespace std;
 
 void usage() {
-	    cout << "CubeH - A slow hash algorithm based on the Cube256 Cipher" << "\n";
+	    cout << "CubeSum - A slow hash algorithm based on the Cube256 Cipher" << "\n";
 	    cout << "---------------------------------------------------------\n";
 	    cout << "***  Hash length defaults to 128 bits\n\n";
 	    cout << "Usage: cubeh <input file> <optional hash length in bits>" << "\n";
@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
 	data.push_back(b);
     }
     infile.close();
-    CubeH hash;
+    CubeSum hash;
     digest = hash.digest(data, string(), hashlen);
     cout << in << ": ";
     for (unsigned char c: digest) {
