@@ -1,2 +1,0 @@
-rm cubecrypt
-g++ cubecrypt.cpp -lssl -lcrypto -std=c++11 -o cubecrypt
