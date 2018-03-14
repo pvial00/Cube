@@ -11,6 +11,7 @@ Cube v1.0 *** Cube ciphering machine ***
 
 Warning: This machine is designed to work as is, without modification.
 Use at your at own risk!
+
 Author: pvial@kryptomagik.com
 
 -e <input file> <output file> <password> (Encrypt)
