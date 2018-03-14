@@ -6,7 +6,7 @@ Cube passes NIST and DieHarder statistical tests.  Because of the way Cube utili
 (Caution: Use at your own risk!)  
 (Caution: Side channel attacks are possible against Cube.)
 
-# Cube cipher machine file encryption usage:  
+# Cube cipher machine file encryption usage (Mac/Linux/Windows):  
 Cube v1.0 *** Cube ciphering machine ***
 
 Warning: This machine is designed to work as is, without modification.
