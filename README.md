@@ -14,13 +14,13 @@ Use at your at own risk!
 
 Author: pvial@kryptomagik.com
 
--e <input file> <output file> <password> (Encrypt)
--d <input file> <output file> <password> (Decrypt)
--emac <input file> <output file> <password> (Encrypt with HMAC)
--dmac <input file> <output file> <password> (Decrypt with HMAC)
--sum <input file>
--kdf <password> <optional keylength in bytes> <optional # of iterations>
--random <optional number of bytes default is 1 byte>
+-e <input file> <output file> <password> (Encrypt)  
+-d <input file> <output file> <password> (Decrypt)  
+-emac <input file> <output file> <password> (Encrypt with HMAC)  
+-dmac <input file> <output file> <password> (Decrypt with HMAC)  
+-sum <input file>  
+-kdf <password> <optional keylength in bytes> <optional # of iterations>  
+-random <optional number of bytes default is 1 byte>  
 
 
 # Usage:  
