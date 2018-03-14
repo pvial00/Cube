@@ -33,16 +33,6 @@ void usage() {
     cout << "-kdf <password> <optional keylength in bytes> <optional # of iterations>\n";
     cout << "-random <optional number of bytes default is 1 byte>\n";
 }
-void kdfusage() {
-    desc();
-    cout << "Author: pvial@kryptomagik.com\n";
-    cout << "Usage: cubecrypt <encrypt/decrypt> <input file> <output file> <password>" << "\n";
-}
-void sumusage() {
-    desc();
-    cout << "Author: pvial@kryptomagik.com\n";
-    cout << "Usage: cubecrypt <encrypt/decrypt> <input file> <output file> <password>" << "\n";
-}
 
 void file_missing() {
     cout << "Error: input file missing.\n";
@@ -198,7 +188,7 @@ int main(int argc, char** argv) {
     }
     else if(mode == "-kdf") {
         if (argc < 3) {
-            kdfusage();
+            usage();
 	    exit(EXIT_FAILURE);
         }
 
@@ -223,7 +213,7 @@ int main(int argc, char** argv) {
 	int i;
 	unsigned char b;
 	if (argc < 3) {
-	    sumusage();
+	    usage();
 	    exit(EXIT_FAILURE);
 	}
 	else {
