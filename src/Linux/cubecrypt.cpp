@@ -121,10 +121,18 @@ class CubeCrypt {
     void encrypt (string input, string output, string key, string nonce = string(), int blocksize = 100) {
 	int fsize = 0;
 	int stdin_waiting = 0;
+        int ctr = 0;
+        int sub, sub_pos, shift, z, y;
+        string sub_key, ctxt;
+        sub_key = key;
+        int extrablock = 0;
+        int extra = 0;
+        int blocks = 0;
 	if (!isatty(STDIN_FILENO)) {
 	    cout << nonce;
 	    fsize = max_stdin_buf;
 	    stdin_waiting = 1;
+            blocksize = 1;
 	}
 	else {
             infile.open(input.c_str(), std::ios::binary);
@@ -135,34 +143,27 @@ class CubeCrypt {
                 infile.open(input.c_str(), std::ios::binary);
                 outfile.open(output.c_str(), std::ios::binary);
                 outfile << nonce;
+                if (fsize <= blocksize) {
+                    blocks = 1;
+                    blocksize = fsize;
+                }
+                else {
+                    blocks = (fsize / blocksize);
+                    if ((fsize % blocksize) != 0) {
+                        extra = fsize % blocksize;
+                        blocks++;
+                    }
+                }
 	    }
 	    else {
                 cout << "Error: Input file is missing.\n";
 		exit(EXIT_FAILURE);
 	    }
 	}
+        char buf[blocksize];
         gen_cube(size_factor, size_factor, alphabet_size);
         key_cube(key);
         key_cube(nonce);
-        int ctr = 0;
-        int sub, sub_pos, shift, z, y;
-        string sub_key, ctxt;
-        sub_key = key;
-        char buf[blocksize];
-        int extrablock = 0;
-        int extra = 0;
-        int blocks = 0;
-        if (fsize <= blocksize) {
-            blocks = 1;
-            blocksize = fsize;
-        }
-        else {
-            blocks = (fsize / blocksize);
-            if ((fsize % blocksize) != 0) {
-                extra = fsize % blocksize;
-                blocks++;
-            }
-        }
 	if (stdin_waiting == 0) {
             for (int b = 0; b < blocks; b++) {
                 if ((extra > 0) && (b == (blocks - 1))) {
@@ -193,8 +194,8 @@ class CubeCrypt {
 	}
 	else if (stdin_waiting == 1) {
 	    blocksize = 1;
-            while (!cin.eof()) {
-	        if (!cin.eof()) {
+            while (cin) {
+	        if (cin) {
 	            cin.read(buf, blocksize);
                     for (unsigned char byte: buf) {
                         sub = byte;
@@ -224,13 +225,19 @@ class CubeCrypt {
    void decrypt (string input, string output, string key, int nonce_length = 16, int blocksize = 100) {
 	int fsize = 0;
 	int stdin_waiting = 0;
-        //int nonce_length2 = nonce_length + 1;
-        char * nonce_buf = new char [nonce_length];
-        //char nonce_buf[nonce_length];
+        int ctr = 0;
+        int sub, shift, sub_pos, z, y;
+        string sub_key, ptxt;
+        sub_key = key;
+        int extrablock = 0;
+        int extra = 0;
+        int blocks = 0;
+        char nonce_buf[nonce_length];
 	if (!isatty(STDIN_FILENO)) {
 	    fsize = max_stdin_buf;
 	    cin.read(nonce_buf, nonce_length);
 	    stdin_waiting = 1;
+            blocksize = 1;
 	}
 	else {
             infile.open(input.c_str(), std::ios::binary);
@@ -242,37 +249,29 @@ class CubeCrypt {
                 infile.open(input.c_str(), std::ios::binary);
                 infile.read(nonce_buf, nonce_length);
                 outfile.open(output.c_str(), std::ios::binary);
+                if (fsize <= blocksize) {
+                    blocks = 1;
+                    blocksize = fsize;
+                }
+                else {
+                    blocks = (fsize / blocksize);
+                    if ((fsize % blocksize) != 0) {
+                        blocks++;
+                        extra = fsize % blocksize;
+                    }
+                }
 	    }
 	    else {
                 cout << "Error: Input file missing.";
 		exit(EXIT_FAILURE);
 	    }
 	}
+	string n(nonce_buf);
+        string nonce = n.substr(0, nonce_length);
         gen_cube(size_factor, size_factor, alphabet_size);
         key_cube(key);
-	string n(nonce_buf);
-        string nonce;
-        nonce = n.substr(0, 16);
 	key_cube(nonce);
-        int ctr = 0;
-        int sub, shift, sub_pos, z, y;
-        string sub_key, ptxt;
-        sub_key = key;
         char buf[blocksize];
-        int extrablock = 0;
-        int extra = 0;
-        int blocks = 0;
-        if (fsize <= blocksize) {
-            blocks = 1;
-            blocksize = fsize;
-        }
-        else {
-            blocks = (fsize / blocksize);
-            if ((fsize % blocksize) != 0) {
-                blocks++;
-                extra = fsize % blocksize;
-            }
-        }
 	if (stdin_waiting == 0) {
             for (int b = 0; b < blocks; b++) {
                 if ((extra > 0) && (b == (blocks - 1))) {
@@ -302,8 +301,8 @@ class CubeCrypt {
         }
 	else if (stdin_waiting == 1) {
 	    blocksize = 1;
-            while (!cin.eof()) {
-		if (!cin.eof()) {
+            while (cin) {
+		if (cin) {
                     cin.read(buf, blocksize);
                     for (unsigned char byte: buf) {
                         sub = byte;
@@ -324,6 +323,7 @@ class CubeCrypt {
 	                cout << ptxt;
                         ptxt.clear();
 	            }
+                    else { break; }
 		}
             }
        }

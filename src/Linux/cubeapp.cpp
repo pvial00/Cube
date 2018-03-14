@@ -123,10 +123,6 @@ int main(int argc, char** argv) {
 	}
     }
     else if (mode == "-d") {
-        /*if (argc < 5) {
-            usage();
-	    exit(EXIT_FAILURE);
-        }*/
 	if (isatty(STDIN_FILENO)) {
             in = argv[2];
             out = argv[3];
