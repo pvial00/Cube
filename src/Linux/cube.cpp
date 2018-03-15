@@ -125,7 +125,7 @@ class Cube {
         int z;
         int y;
         string sub_key;
-        sub_key = key.substr(0, 1);
+        sub_key = key;
         for (unsigned char byte: data) {
             sub = byte;
 	    for (z=0; z < state.size(); z++) {
@@ -156,7 +156,7 @@ class Cube {
         int z;
         int y;
         string sub_key;
-        sub_key = key.substr(0, 1);
+        sub_key = key;
         for (unsigned char byte: data) {
             sub = byte;
 	    for (z=state.size(); z--> 0;) {

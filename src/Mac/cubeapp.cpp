@@ -7,6 +7,7 @@
 #include "cubecrypt.cpp"
 #include <openssl/hmac.h>
 
+char version[] = "1.0.1";
 int iterations = 10;
 int keylen = 16;
 int nonce_length = 16;
@@ -18,7 +19,7 @@ int seedlength = keylen;
 int keylength = 16;
 
 void desc() {
-    cout << "Cube v1.0 *** Cube ciphering machine ***\n\n";
+    cout << "Cube v" << version <<" *** Cube ciphering machine ***\n\n";
     cout << "Warning: This machine is designed to work as is, without modification.\n";
     cout << "Use at your at own risk!\n";
 }
