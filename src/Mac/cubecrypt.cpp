@@ -119,7 +119,7 @@ class CubeCrypt {
     }
 
     void encrypt (string input, string output, string key, string nonce = string(), int blocksize = 100) {
-	int fsize = 0;
+	long fsize = 0;
 	int stdin_waiting = 0;
 	if (!isatty(STDIN_FILENO)) {
 	    cout << nonce;
@@ -224,7 +224,7 @@ class CubeCrypt {
     }
 
    void decrypt (string input, string output, string key, int nonce_length = 16, int blocksize = 100) {
-	int fsize = 0;
+	long fsize = 0;
 	int stdin_waiting = 0;
         char * nonce_buf = new char [nonce_length];
 	if (!isatty(STDIN_FILENO)) {

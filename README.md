@@ -22,6 +22,13 @@ Author: pvial@kryptomagik.com
 -kdf <password> <optional keylength in bytes> <optional # of iterations>  
 -random <optional number of bytes default is 1 byte>  
 
+* Dependendcies to build Cube in Linux  
+libsd-dev  
+libssl-dev  
+
+* Dependencies for MacOS  
+openssl  
+
 
 # Usage:  
 Cube cube;

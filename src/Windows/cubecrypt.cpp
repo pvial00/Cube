@@ -119,7 +119,7 @@ class CubeCrypt {
     }
 
     void encrypt (string input, string output, string key, string nonce = string(), int blocksize = 100) {
-	int fsize = 0;
+	long fsize = 0;
 	int stdin_waiting = 0;
         int ctr = 0;
         int sub, sub_pos, shift, z, y;
@@ -223,7 +223,7 @@ class CubeCrypt {
     }
 
    void decrypt (string input, string output, string key, int nonce_length = 16, int blocksize = 100) {
-	int fsize = 0;
+	long fsize = 0;
 	int stdin_waiting = 0;
         char nonce_buf[nonce_length];
         int ctr = 0;
