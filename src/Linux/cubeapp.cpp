@@ -7,6 +7,7 @@
 #include "cubecrypt.cpp"
 #include <openssl/hmac.h>
 
+char version[] = "1.0.2";
 int iterations = 10;
 int keylen = 16;
 int nonce_length = 16;
@@ -18,7 +19,7 @@ int seedlength = keylen;
 int keylength = 16;
 
 void desc() {
-    cout << "Cube v1.0 *** Cube ciphering machine ***\n\n";
+    cout << "Cube v" << version << " *** Cube ciphering machine ***\n\n";
     cout << "Warning: This machine is designed to work as is, without modification.\n";
     cout << "Use at your at own risk!\n";
 }
@@ -32,6 +33,16 @@ void usage() {
     cout << "-sum <input file>\n";
     cout << "-kdf <password> <optional keylength in bytes> <optional # of iterations>\n";
     cout << "-random <optional number of bytes default is 1 byte>\n";
+}
+void kdfusage() {
+    desc();
+    cout << "Author: pvial@kryptomagik.com\n";
+    cout << "Usage: cubecrypt <encrypt/decrypt> <input file> <output file> <password>" << "\n";
+}
+void sumusage() {
+    desc();
+    cout << "Author: pvial@kryptomagik.com\n";
+    cout << "Usage: cubecrypt <encrypt/decrypt> <input file> <output file> <password>" << "\n";
 }
 
 void file_missing() {
@@ -185,7 +196,7 @@ int main(int argc, char** argv) {
     }
     else if(mode == "-kdf") {
         if (argc < 3) {
-            usage();
+            kdfusage();
 	    exit(EXIT_FAILURE);
         }
 
@@ -210,7 +221,7 @@ int main(int argc, char** argv) {
 	int i;
 	unsigned char b;
 	if (argc < 3) {
-	    usage();
+	    sumusage();
 	    exit(EXIT_FAILURE);
 	}
 	else {

@@ -119,7 +119,7 @@ class CubeCrypt {
     }
 
     void encrypt (string input, string output, string key, string nonce = string(), int blocksize = 100) {
-	long fsize = 0;
+	unsigned long long fsize = 0;
 	int stdin_waiting = 0;
 	if (!isatty(STDIN_FILENO)) {
 	    cout << nonce;
@@ -168,11 +168,9 @@ class CubeCrypt {
                 if ((extra > 0) && (b == (blocks - 1))) {
                     blocksize = extra;
                 }
-	        if (stdin_waiting == 0) {
-                    infile.read(buf, blocksize);
-                }
-                for (unsigned char byte: buf) {
-                    sub = byte;
+                infile.read(buf, blocksize);
+                for (int i = 0; i < blocksize; i++) {
+                    sub = static_cast<unsigned char>(buf[i]);
 	            for (z=0; z < state.size(); z++) {
 	                for (y=0; y < state[z].size(); y++) {
                             sub_pos = sub;
@@ -198,8 +196,8 @@ class CubeCrypt {
             while (cin) {
 	        if (cin) {
 	            cin.read(buf, blocksize);
-                    for (unsigned char byte: buf) {
-                        sub = byte;
+                    for (int i = 0; i < blocksize; i++) {
+                        sub = static_cast<unsigned char>(buf[i]);
 	                for (z=0; z < state.size(); z++) {
 	                    for (y=0; y < state[z].size(); y++) {
                                 sub_pos = sub;
@@ -224,7 +222,7 @@ class CubeCrypt {
     }
 
    void decrypt (string input, string output, string key, int nonce_length = 16, int blocksize = 100) {
-	long fsize = 0;
+	unsigned long long fsize = 0;
 	int stdin_waiting = 0;
         char * nonce_buf = new char [nonce_length];
 	if (!isatty(STDIN_FILENO)) {
@@ -276,11 +274,9 @@ class CubeCrypt {
                 if ((extra > 0) && (b == (blocks - 1))) {
                     blocksize = extra;
                 }
-	        if (stdin_waiting == 0) {
-                    infile.read(buf, blocksize);
-                }
-                for (unsigned char byte: buf) {
-                    sub = byte;
+                infile.read(buf, blocksize);
+                for (int i = 0; i < blocksize; i++) {
+                    sub = static_cast<unsigned char>(buf[i]);
 	            for (z=state.size(); z--> 0;) {
 	                for (y=state[z].size(); y --> 0;) {
 		            sub = find(state[z][y].begin(), state[z][y].end(), sub) - state[z][y].begin();
@@ -305,8 +301,8 @@ class CubeCrypt {
             while (cin) {
 		if (cin) {
                     cin.read(buf, blocksize);
-                    for (unsigned char byte: buf) {
-                        sub = byte;
+                    for (int i = 0; i < blocksize; i++) {
+                        sub = static_cast<unsigned char>(buf[i]);
 	                for (z=state.size(); z--> 0;) {
 	                    for (y=state[z].size(); y --> 0;) {
 		                sub = find(state[z][y].begin(), state[z][y].end(), sub) - state[z][y].begin();

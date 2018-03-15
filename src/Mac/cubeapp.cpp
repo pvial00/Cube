@@ -7,7 +7,7 @@
 #include "cubecrypt.cpp"
 #include <openssl/hmac.h>
 
-char version[] = "1.0.1";
+char version[] = "1.0.2";
 int iterations = 10;
 int keylen = 16;
 int nonce_length = 16;
