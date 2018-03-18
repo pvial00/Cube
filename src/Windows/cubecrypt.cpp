@@ -16,7 +16,8 @@ class CubeCrypt {
     vector< vector< vector<int> > > state;
     ifstream infile;
     ofstream outfile;
-    int max_stdin_buf = 500000000;
+    unsigned long long fsize = 0;
+    unsigned long max_stdin_buf = 4294967295;
 
     void gen_cube (int depth, int width, int length) {
         for (int z=0; z < depth; z++) {
@@ -97,17 +98,15 @@ class CubeCrypt {
     }
 
     void morph_cube (int counter, string k) {
-        int mod_value;
         int shift;
         int z;
         int y;
         int ke;
         vector< vector<int> >  section_shift;
-        mod_value = counter % alphabet_size;
         for (z=0; z < state.size(); z++) {
 	    for (unsigned char key_element : k) {
                 for (y=0; y < state[z].size(); y++) {
-		    swap(state[z][y][mod_value], state[z][y][int(key_element)]);
+		    swap(state[z][y][counter], state[z][y][int(key_element)]);
 		    ke = key_element;
                 }
 	    }
@@ -184,7 +183,7 @@ class CubeCrypt {
 	            sub_key = key_scheduler(sub_key);
 	            morph_cube(ctr, sub_key);
                     ctxt.push_back(char(sub));
-                    ctr++;
+                    ctr = (ctr + 1) % alphabet_size;
                 }
                 outfile << ctxt;
                 ctxt.clear();
@@ -211,7 +210,7 @@ class CubeCrypt {
 	                sub_key = key_scheduler(sub_key);
 	                morph_cube(ctr, sub_key);
                         ctxt.push_back(char(sub));
-                        ctr++;
+                        ctr = (ctr + 1) % alphabet_size;
                     }
 		    if (!cin.eof()) {
 	                cout << ctxt;
@@ -291,7 +290,7 @@ class CubeCrypt {
 	            sub_key = key_scheduler(sub_key);
 	            morph_cube(ctr, sub_key);
                     ptxt.push_back(char(sub));
-                    ctr++;
+                    ctr = (ctr + 1) % alphabet_size;
                 }
                 outfile << ptxt;
                 ptxt.clear();
@@ -316,7 +315,7 @@ class CubeCrypt {
 	                sub_key = key_scheduler(sub_key);
 	                morph_cube(ctr, sub_key);
                         ptxt.push_back(char(sub));
-                        ctr++;
+                        ctr = (ctr + 1) % alphabet_size;
                     }
 		    if(!cin.eof()) {
 	                cout << ptxt;

@@ -141,7 +141,7 @@ class Cube {
 	    sub_key = key_scheduler(sub_key);
 	    morph_cube(ctr, sub_key);
 	    data[ctr] = char(sub);
-            ctr++;
+            ctr = (ctr + 1) % alphabet_size;
         }
         return data;
     }
@@ -171,7 +171,7 @@ class Cube {
 	    sub_key = key_scheduler(sub_key);
 	    morph_cube(ctr, sub_key);
 	    data[ctr] = char(sub);
-            ctr++;
+            ctr = (ctr + 1) % alphabet_size;
         }
         return data;
     }

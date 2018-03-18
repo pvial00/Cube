@@ -4,10 +4,11 @@
 #include <fstream>
 #include <utility>
 #include <algorithm>
+#include <iomanip>
 #include "cubecrypt.cpp"
 #include <openssl/hmac.h>
 
-char version[] = "1.0.2";
+char version[] = "1.0.3";
 int iterations = 10;
 int keylen = 16;
 int nonce_length = 16;
@@ -19,7 +20,7 @@ int seedlength = keylen;
 int keylength = 16;
 
 void desc() {
-    cout << "Cube v" << version <<" *** Cube ciphering machine ***\n\n";
+    cout << "Cube v" << version << " *** Cube ciphering machine ***\n\n";
     cout << "Warning: This machine is designed to work as is, without modification.\n";
     cout << "Use at your at own risk!\n";
 }
@@ -33,6 +34,16 @@ void usage() {
     cout << "-sum <input file>\n";
     cout << "-kdf <password> <optional keylength in bytes> <optional # of iterations>\n";
     cout << "-random <optional number of bytes default is 1 byte>\n";
+}
+void kdfusage() {
+    desc();
+    cout << "Author: pvial@kryptomagik.com\n";
+    cout << "Usage: cubecrypt <encrypt/decrypt> <input file> <output file> <password>" << "\n";
+}
+void sumusage() {
+    desc();
+    cout << "Author: pvial@kryptomagik.com\n";
+    cout << "Usage: cubecrypt <encrypt/decrypt> <input file> <output file> <password>" << "\n";
 }
 
 void file_missing() {
@@ -105,6 +116,7 @@ int main(int argc, char** argv) {
 	    string mm(reinterpret_cast<char*>(mac));
             outfile.open(out.c_str(), std::ios::app|std::ios::binary);
             outfile << mm;
+            cout << mm;
 	    outfile.close();
 	}
 	else {
@@ -113,10 +125,6 @@ int main(int argc, char** argv) {
 	}
     }
     else if (mode == "-d") {
-        /*if (argc < 5) {
-            usage();
-	    exit(EXIT_FAILURE);
-        }*/
 	if (isatty(STDIN_FILENO)) {
             in = argv[2];
             out = argv[3];
@@ -189,7 +197,7 @@ int main(int argc, char** argv) {
     }
     else if(mode == "-kdf") {
         if (argc < 3) {
-            usage();
+            kdfusage();
 	    exit(EXIT_FAILURE);
         }
 
@@ -204,7 +212,14 @@ int main(int argc, char** argv) {
 	}
 	key = kdf.genkey(key, keylen, iterations);
 	for (unsigned char k: key) {
-	    cout << std::hex << static_cast<unsigned int>(k);
+            int i = int(k);
+            if (i <= 15) {
+                    cout << setfill('0');
+                    cout << std::hex << setw(2) << i;
+                }
+                else {
+                    cout << std::hex << i;
+                }
 	}
 	cout << "\n";
 	return 0;
@@ -214,7 +229,7 @@ int main(int argc, char** argv) {
 	int i;
 	unsigned char b;
 	if (argc < 3) {
-	    usage();
+	    sumusage();
 	    exit(EXIT_FAILURE);
 	}
 	else {
@@ -237,7 +252,14 @@ int main(int argc, char** argv) {
 	    digest = cubesum.digest(data, string(), hashlen);
 	    cout << in << ": ";
 	    for (unsigned char d: digest) {
-	        cout << std::hex << static_cast<unsigned int>(d);
+                int i = int(d);
+                if (i <= 15) {
+                    cout << setfill('0');
+                    cout << std::hex << setw(2) << i;
+                }
+                else {
+                    cout << std::hex << i;
+                }
 	    }
 	    cout << "\n";
 	    return 0;
@@ -259,5 +281,8 @@ int main(int argc, char** argv) {
 	    cout << b;
 	}
 	return 0;
+    }
+    else if(mode == "-v") {
+        cout << version << "\n";
     }
 }

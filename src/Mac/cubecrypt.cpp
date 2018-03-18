@@ -13,10 +13,11 @@ class CubeCrypt {
     public:
     int size_factor = 3;
     int alphabet_size = 256;
+    unsigned long long fsize = 0;
     vector< vector< vector<int> > > state;
     ifstream infile;
     ofstream outfile;
-    int max_stdin_buf = 500000000;
+    unsigned long max_stdin_buf = 4294967295;
 
     void gen_cube (int depth, int width, int length) {
         for (int z=0; z < depth; z++) {
@@ -119,7 +120,6 @@ class CubeCrypt {
     }
 
     void encrypt (string input, string output, string key, string nonce = string(), int blocksize = 100) {
-	unsigned long long fsize = 0;
 	int stdin_waiting = 0;
 	if (!isatty(STDIN_FILENO)) {
 	    cout << nonce;
@@ -183,7 +183,7 @@ class CubeCrypt {
 	            sub_key = key_scheduler(sub_key);
 	            morph_cube(ctr, sub_key);
                     ctxt.push_back(char(sub));
-                    ctr++;
+                    ctr = (ctr + 1) % alphabet_size;
                 }
                 outfile << ctxt;
                 ctxt.clear();
@@ -210,7 +210,7 @@ class CubeCrypt {
 	                sub_key = key_scheduler(sub_key);
 	                morph_cube(ctr, sub_key);
                         ctxt.push_back(char(sub));
-                        ctr++;
+                        ctr = (ctr + 1) % alphabet_size;
                     }
 		    if (!cin.eof()) {
 	                cout << ctxt;
@@ -222,7 +222,6 @@ class CubeCrypt {
     }
 
    void decrypt (string input, string output, string key, int nonce_length = 16, int blocksize = 100) {
-	unsigned long long fsize = 0;
 	int stdin_waiting = 0;
         char * nonce_buf = new char [nonce_length];
 	if (!isatty(STDIN_FILENO)) {
@@ -288,7 +287,7 @@ class CubeCrypt {
 	            sub_key = key_scheduler(sub_key);
 	            morph_cube(ctr, sub_key);
                     ptxt.push_back(char(sub));
-                    ctr++;
+                    ctr = (ctr + 1) % alphabet_size;
                 }
                 outfile << ptxt;
                 ptxt.clear();
@@ -314,7 +313,7 @@ class CubeCrypt {
 	                sub_key = key_scheduler(sub_key);
 	                morph_cube(ctr, sub_key);
                         ptxt.push_back(char(sub));
-                        ctr++;
+                        ctr = (ctr + 1) % alphabet_size;
                     }
 		    if(!cin.eof()) {
 	                cout << ptxt;

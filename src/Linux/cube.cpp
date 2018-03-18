@@ -118,7 +118,7 @@ class Cube {
         gen_cube(size_factor, size_factor, alphabet_size);
         key_cube(key);
         key_cube(nonce);
-        int ctr = 0;
+        unsigned long ctr = 0;
         int sub;
         int sub_pos;
         int shift;
@@ -140,7 +140,7 @@ class Cube {
 	    sub_key = key_scheduler(sub_key);
 	    morph_cube(ctr, sub_key);
 	    data[ctr] = char(sub);
-            ctr++;
+            ctr = (ctr + 1) % alphabet_size;
         }
         return data;
     }
@@ -149,7 +149,7 @@ class Cube {
         gen_cube(size_factor, size_factor, alphabet_size);
         key_cube(key);
         key_cube(nonce);
-        int ctr = 0;
+        unsigned long ctr = 0;
         int sub;
         int sub_pos;
         int shift;
@@ -170,7 +170,7 @@ class Cube {
 	    sub_key = key_scheduler(sub_key);
 	    morph_cube(ctr, sub_key);
 	    data[ctr] = char(sub);
-            ctr++;
+            ctr = (ctr + 1) % alphabet_size;
         }
         return data;
     }
