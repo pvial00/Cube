@@ -43,13 +43,7 @@ class CubeCrypt {
     }
 
     void key_cube (string key) {
-        int z;
-        int x;
-        int y;
-        int k;
-        int shuffle;
-        int key_sub;
-        int sized_pos;
+        int z, x, y, k, shuffle, key_sub, sized_pos;
         for (z=0; z < state.size(); z++) {
             for (unsigned char k: key) {
                 for (x=0; x < state[z].size(); x++) {
@@ -81,9 +75,7 @@ class CubeCrypt {
     }
 
     string key_scheduler (string key) {
-        int x;
-        int sized_pos;
-        int sub;
+        int x, sized_pos, sub;
         vector< vector<int> > section;
         vector<int> sub_alpha;
         string sub_key;
@@ -98,17 +90,12 @@ class CubeCrypt {
     }
 
     void morph_cube (int counter, string k) {
-        int mod_value;
-        int shift;
-        int z;
-        int y;
-        int ke;
+        int shift, z, y, ke;
         vector< vector<int> >  section_shift;
-        mod_value = counter % alphabet_size;
         for (z=0; z < state.size(); z++) {
 	    for (unsigned char key_element : k) {
                 for (y=0; y < state[z].size(); y++) {
-		    swap(state[z][y][mod_value], state[z][y][int(key_element)]);
+		    swap(state[z][y][counter], state[z][y][int(key_element)]);
 		    ke = key_element;
                 }
 	    }
@@ -145,7 +132,7 @@ class CubeCrypt {
         key_cube(key);
         key_cube(nonce);
         int ctr = 0;
-        int sub, sub_pos, shift, z, y;
+        int sub, shift, z, y;
         string sub_key, ctxt;
         sub_key = key;
         char buf[blocksize];
@@ -173,8 +160,7 @@ class CubeCrypt {
                     sub = static_cast<unsigned char>(buf[i]);
 	            for (z=0; z < state.size(); z++) {
 	                for (y=0; y < state[z].size(); y++) {
-                            sub_pos = sub;
-		            sub = state[z][y].at(sub_pos);
+		            sub = state[z][y].at(sub);
 		            shift = state[z][y].at(0);
 		            state[z][y].erase(state[z][y].begin()+0);
 		            state[z][y].push_back(shift);
@@ -200,8 +186,7 @@ class CubeCrypt {
                         sub = static_cast<unsigned char>(buf[i]);
 	                for (z=0; z < state.size(); z++) {
 	                    for (y=0; y < state[z].size(); y++) {
-                                sub_pos = sub;
-		                sub = state[z][y].at(sub_pos);
+		                sub = state[z][y].at(sub);
 		                shift = state[z][y].at(0);
 		                state[z][y].erase(state[z][y].begin()+0);
 		                state[z][y].push_back(shift);
@@ -250,7 +235,7 @@ class CubeCrypt {
 	string nonce(nonce_buf);
 	key_cube(nonce);
         int ctr = 0;
-        int sub, shift, sub_pos, z, y;
+        int sub, shift, z, y;
         string sub_key, ptxt;
         sub_key = key;
         char buf[blocksize];

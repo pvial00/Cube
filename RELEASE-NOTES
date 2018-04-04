@@ -1,0 +1,8 @@
+v1.0
+   - Initial release
+v1.0.1 - v1.0.4
+   - minor bug fixes
+v1.1.0
+   - Improved CubeRandom, CubeSum, CubeKDF
+   - Removed redundant sub_pos variable
+   - Redundant mod_value was replaced with counter resulting in 1 less call modulo call per round

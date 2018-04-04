@@ -8,14 +8,14 @@
 #include "cubecrypt.cpp"
 #include <openssl/hmac.h>
 
-char version[] = "1.0.3";
-int iterations = 10;
+char version[] = "1.1.0";
 int keylen = 16;
 int nonce_length = 16;
 int mac_length = 32;
 int buffersize = 100;
 int hashlen = 16;
 int numbytes = 1;
+int iterations = 10;
 int seedlength = keylen;
 int keylength = 16;
 
@@ -87,7 +87,7 @@ int main(int argc, char** argv) {
             key = argv[4];
         }
         key = kdf.genkey(key, keylen, iterations);
-	nonce = rand.random(nonce_length, nonce_length, nonce_length, iterations);
+	nonce = rand.random(nonce_length);
     	cube.encrypt(in, out, key, nonce, buffersize);
         return 0;
     }
@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
         out = argv[3];
         key = argv[4];
         key = kdf.genkey(key, keylen, iterations);
-	nonce = rand.random(nonce_length, nonce_length, nonce_length, iterations);
+	nonce = rand.random(nonce_length);
     	cube.encrypt(in, out, key, nonce, buffersize);
         infile.open(out.c_str(), std::ios::binary);
 	if(infile.is_open()) {
@@ -116,7 +116,6 @@ int main(int argc, char** argv) {
 	    string mm(reinterpret_cast<char*>(mac));
             outfile.open(out.c_str(), std::ios::app|std::ios::binary);
             outfile << mm;
-            cout << mm;
 	    outfile.close();
 	}
 	else {
@@ -276,7 +275,7 @@ int main(int argc, char** argv) {
 	else {
             numbytes = 1;
 	}
-	data = rand.random(numbytes, seedlength, keylen, iterations);
+	data = rand.random(numbytes);
 	for (unsigned char b: data) {
 	    cout << b;
 	}

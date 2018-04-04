@@ -94,17 +94,12 @@ class Cube {
     }
 
     void morph_cube (int counter, string k) {
-        int mod_value;
-        int shift;
-        int z;
-        int y;
-        int ke;
+        int shift, z, y, ke;
         vector< vector<int> >  section_shift;
-        mod_value = counter % alphabet_size;
         for (z=0; z < state.size(); z++) {
 	    for (unsigned char key_element : k) {
                 for (y=0; y < state[z].size(); y++) {
-		    swap(state[z][y][mod_value], state[z][y][int(key_element)]);
+		    swap(state[z][y][counter], state[z][y][int(key_element)]);
 		    ke = key_element;
                 }
 	    }
