@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-lssl -lcrypto -std=c++11 -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib
+CFLAGS=-lssl -lcrypto -std=c++11 -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib -O3
 TARGET=cube
 all: $(TARGET)
 

@@ -1,1 +1,1 @@
-g++ cubeapp.cpp -std=c++11 -o cube
+g++ cubeapp.cpp -std=c++11 -o cube -O3
