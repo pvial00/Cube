@@ -3,6 +3,10 @@ Cube is an advanced substitution stream cipher/cipher machine.  It is what I cal
 
 Cube passes NIST and DieHarder statistical tests.  Because of the way Cube utilizes the key values, the minimum key length is 16 bytes or 128 bits.  Key lengths of a single byte have been identified as weak.
 
+Link to full description (comments also in code):
+
+https://github.com/pvial00/pycube256/wiki/Cube256---A-General-Purpose-Stream-Cipher
+
 (Caution: Use at your own risk!)  
 (Caution: Side channel attacks are possible against Cube.)
 
